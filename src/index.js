@@ -1,7 +1,21 @@
 import express from 'express';
+import pino from 'pino-http';
+import cors from 'cors';
 
 const PORT = 3000;
 const app = express();
+//pino logging request for formetting(put on the very begginning of middlewares)
+app.use(
+  pino({
+    transport: {
+      target: 'pino-pretty',
+    },
+  }),
+);
+
+//adding cors
+app.use(cors());
+
 app.use(express.json());
 //middlware with showing time of request
 app.use((req, res, next) => {
