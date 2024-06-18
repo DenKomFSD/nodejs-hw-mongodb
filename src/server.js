@@ -35,7 +35,7 @@ export const setupServer = () => {
   //request by ID
   app.get('/contacts/:contactId', async (req, res) => {
     try {
-      const { contactId } = req.params.contactId;
+      const { contactId } = req.params;
 
       const data = await getContactById(contactId);
 
@@ -61,19 +61,17 @@ export const setupServer = () => {
     }
   });
   //middleware for request that is doesnt exist(adding in the end)
-  app.use((req, res, next) => {
+  app.use('*', (req, res) => {
     res.status(404).json({
       message: 'not found',
     });
-    next();
   });
   //middleware with err
-  app.use((err, req, res, next) => {
+  app.use((err, req, res) => {
     res.status(500).json({
       message: 'Something went wrong',
       error: err.message,
     });
-    next();
   });
 
   //listening server
