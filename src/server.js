@@ -61,7 +61,7 @@ export const setupServer = () => {
     }
   });
   //middleware for request that is doesnt exist(adding in the end)
-  app.use('*', (req, res, next) => {
+  app.use((req, res, next) => {
     res.status(404).json({
       message: 'not found',
     });
