@@ -2,11 +2,11 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
-import { getContacts, getContactById } from './services/contact-services.js';
+import { getContacts, getContactById } from './services/contacts.js';
 
 const PORT = Number(env('PORT', '3000'));
 
-export const startServer = () => {
+export const setupServer = () => {
   const app = express();
   //adding cors
   app.use(cors());
@@ -33,21 +33,21 @@ export const startServer = () => {
   });
 
   //request by ID
-  app.get('/api/contacts/:id', async (req, res) => {
+  app.get('/api/contacts/:contactId', async (req, res) => {
     try {
-      const { id } = req.params;
+      const { contactId } = req.params;
 
-      const data = await getContactById(id);
+      const data = await getContactById(contactId);
 
       if (!data) {
         return res.status(404).json({
-          message: `Contact with id=${id} not found`,
+          message: `Contact with id=${contactId} not found`,
         });
       }
       res.json({
         status: 200,
         data,
-        message: 'Successfully get contact by Id',
+        message: `Successfully found contact with id ${contactId}!`,
       });
     } catch (error) {
       if (error.message.includes('Cast to ObjectId failed ')) {
