@@ -9,17 +9,16 @@ export const startServer = () => {
   const app = express();
   //adding cors
   app.use(cors());
-
   app.use(express.json());
 
   //pino logging request for formetting(put on the very begginning of middlewares)
-  app.use(
-    pino({
-      transport: {
-        target: 'pino-pretty',
-      },
-    }),
-  );
+  const logger = pino({
+    transport: {
+      target: 'pino-pretty',
+    },
+  });
+
+  app.use(logger);
 
   //request
   app.get('/', (req, res) => {
@@ -41,6 +40,7 @@ export const startServer = () => {
       message: 'Something went wrong',
       error: err.message,
     });
+    next();
   });
 
   //listening server
