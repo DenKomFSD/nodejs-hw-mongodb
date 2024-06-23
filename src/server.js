@@ -3,6 +3,8 @@ import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
 import contactsRouter from './routers/contacts.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -17,22 +19,13 @@ export const setupServer = () => {
       target: 'pino-pretty',
     },
   });
-  app.use(contactsRouter);
   app.use(logger);
+  app.use(contactsRouter);
 
   //middleware for request that is doesnt exist(adding in the end)
-  app.use('*', (req, res) => {
-    res.status(404).json({
-      message: 'not found',
-    });
-  });
+  app.use('*', notFoundHandler);
   //middleware with err
-  app.use((err, req, res) => {
-    res.status(500).json({
-      message: 'Something went wrong',
-      error: err.message,
-    });
-  });
+  app.use(errorHandler);
 
   //listening server
   app.listen(PORT, () => {
