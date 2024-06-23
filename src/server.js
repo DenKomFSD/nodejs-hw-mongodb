@@ -11,14 +11,12 @@ export const setupServer = () => {
   //adding cors
   app.use(cors());
   app.use(express.json());
-
   //pino logging request for formatting(put on the very begginning of middlewares)
   const logger = pino({
     transport: {
       target: 'pino-pretty',
     },
   });
-
   app.use(logger);
 
   //request
