@@ -6,16 +6,20 @@ export const getContactById = (contactId) => Contact.findById(contactId);
 
 export const addContact = (data) => Contact.create(data);
 
-export const upsertContact = async (filter, body, options = {}) => {
-  Contact.findOneAndUpdate(filter, body, {
+export const upsertContact = async (filter, data, options = {}) => {
+  const result = await Contact.findOneAndUpdate(filter, data, {
     new: true,
     includeResultMetadata: true,
     ...options,
   });
-  if (!data || !data.value) return null;
-  const isNew = Boolean(data?.lastErrorObject?.upserted);
+
+  if (!result || !result.value) return null;
+
+  const isNew = Boolean(result?.lastErrorObject?.upserted);
   return {
-    data: data.value,
+    data: result.value,
     isNew,
   };
 };
+
+export const deleteContact = (filter) => Contact.findOneAndDelete(filter);
