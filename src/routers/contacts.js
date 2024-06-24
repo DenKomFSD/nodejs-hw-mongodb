@@ -3,6 +3,7 @@ import {
   getAllContactsController,
   getContactByIdController,
   addContactController,
+  patchContactController,
 } from '../controllers/contacts.js';
 
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
@@ -18,5 +19,7 @@ router.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
 
 //POST request
 router.post('/contacts', ctrlWrapper(addContactController));
+
+router.patch('/contacts/:contactId', ctrlWrapper(patchContactController));
 
 export default router;

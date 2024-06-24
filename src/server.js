@@ -11,7 +11,7 @@ const PORT = Number(env('PORT', '3000'));
 export const setupServer = () => {
   const app = express();
   //adding cors
-  app.use(cors());
+
   app.use(express.json());
   //pino logging request for formatting(put on the very begginning of middlewares)
   const logger = pino({
@@ -20,6 +20,7 @@ export const setupServer = () => {
     },
   });
   app.use(logger);
+  app.use(cors());
   app.use(contactsRouter);
 
   //middleware for request that is doesnt exist(adding in the end)
