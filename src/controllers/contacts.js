@@ -61,7 +61,11 @@ export const patchContactController = async (req, res) => {
   const result = await upsertContact({ _id: contactId }, req.body);
 
   if (!result) {
-    throw createHttpError(404, 'Contact not found');
+    throw createHttpError(404, {
+      status: 404,
+      message: 'Contact not found',
+      data: { message: 'Contact not found' },
+    });
   }
 
   res.json({
@@ -77,7 +81,11 @@ export const deleteContactController = async (req, res) => {
   const result = await deleteContact({ _id: contactId });
 
   if (!result) {
-    throw createHttpError(404, 'Contact not found');
+    throw createHttpError(404, {
+      status: 404,
+      message: 'Contact not found',
+      data: { message: 'Contact not found' },
+    });
   }
 
   res.json({
