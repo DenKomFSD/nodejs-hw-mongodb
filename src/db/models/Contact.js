@@ -4,7 +4,7 @@ import {
   phoneRegExp,
   typeList,
 } from '../../constants/contacts-constants.js';
-import { mongooseSaveError } from './hooks.js';
+import { mongooseSaveError, setUpdateSet } from './hooks.js';
 
 const contactSchema = new Schema(
   {
@@ -40,6 +40,7 @@ const contactSchema = new Schema(
 );
 
 contactSchema.post('save', mongooseSaveError);
+contactSchema.pre('findOneAndUpdate', setUpdateSet);
 contactSchema.post('findOneAndUpdate', mongooseSaveError);
 
 const Contact = model('contact', contactSchema);
