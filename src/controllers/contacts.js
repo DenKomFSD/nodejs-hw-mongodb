@@ -6,9 +6,11 @@ import {
   deleteContact,
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
+import parsePaginationParams from '../utils/parsePaginationParams.js';
 
 export const getAllContactsController = async (req, res, next) => {
   try {
+    const { page, perPage } = parsePaginationParams(req.query);
     const result = await getContacts();
     res.json({
       status: 200,
