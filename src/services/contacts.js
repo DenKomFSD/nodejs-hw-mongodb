@@ -1,8 +1,14 @@
 import Contact from '../db/models/Contact.js';
-
 import calcPagination from '../utils/calcPagination.js';
+import { contactFieldList } from '../constants/contacts-constants.js';
+import { sortOrderList } from '../constants/sorting.js';
 
-export const getContacts = async ({ page, perPage, sortBy, sortOrder }) => {
+export const getContacts = async ({
+  page,
+  perPage,
+  sortBy = contactFieldList[0],
+  sortOrder = sortOrderList[0],
+}) => {
   const skip = (page - 1) * perPage;
   const items = await Contact.find()
     .skip(skip)
