@@ -4,8 +4,7 @@ import { contactFieldList } from '../constants/contacts-constants.js';
 import { sortOrderList } from '../constants/sorting.js';
 
 export const getContacts = async ({
-  isFavourite,
-  type,
+  filter,
   page,
   perPage,
   sortBy = contactFieldList[0],
@@ -13,11 +12,11 @@ export const getContacts = async ({
 }) => {
   const skip = (page - 1) * perPage;
   const request = Contact.find();
-  if (type) {
-    request.where('type').equals(type);
+  if (filter.type) {
+    request.where('type').equals(filter.type);
   }
-  if (isFavourite) {
-    request.where('isFavourite').equals(isFavourite);
+  if (filter.isFavourite) {
+    request.where('isFavourite').equals(filter.isFavourite);
   }
   const items = await request
     .skip(skip)
