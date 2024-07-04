@@ -4,17 +4,27 @@ import { contactFieldList } from '../constants/contacts-constants.js';
 import { sortOrderList } from '../constants/sorting.js';
 
 export const getContacts = async ({
+  isFavourite,
+  type,
   page,
   perPage,
   sortBy = contactFieldList[0],
   sortOrder = sortOrderList[0],
 }) => {
   const skip = (page - 1) * perPage;
-  const items = await Contact.find()
+  const request = Contact.find();
+  if (type) {
+    request.where('type').equals(type);
+  }
+  if (isFavourite) {
+    request.where('isFavourite').equals(isFavourite);
+  }
+  const items = await request
     .skip(skip)
     .limit(perPage)
-    .sort({ [sortBy]: sortOrder });
-  const totalItems = await Contact.countDocuments();
+    .sort({ [sortBy]: sortOrder })
+    .exec();
+  const totalItems = await Contact.find().merge(request).countDocuments();
   const { totalPages, hasNextPage, hasPreviousPage } = calcPagination({
     total: totalItems,
     page,

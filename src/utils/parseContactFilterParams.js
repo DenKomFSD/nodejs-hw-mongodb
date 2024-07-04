@@ -13,7 +13,6 @@ const parseBoolean = (value) => {
 
   const parsedValue = Boolean(value);
   return parsedValue;
-  console.log(parsedValue);
 };
 
 const parseContactFilterParams = ({ type, isFavourite }) => {
