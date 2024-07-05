@@ -10,34 +10,48 @@ export const getContacts = async ({
   sortBy = contactFieldList[0],
   sortOrder = sortOrderList[0],
 }) => {
+  const limit = perPage;
   const skip = (page - 1) * perPage;
+
   const request = Contact.find();
-  const countRequest = Contact.find();
+  const totalItems = await Contact.find().merge(request).countDocuments();
+
   if (filter.type) {
     request.where('type').equals(filter.type);
-    countRequest.where('type').equals(filter.type);
+    // countRequest.where('type').equals(filter.type);
   }
   if (filter.isFavourite) {
     request.where('isFavourite').equals(filter.isFavourite);
-    countRequest.where('isFavourite').equals(filter.isFavourite);
+    // countRequest.where('isFavourite').equals(filter.isFavourite);
   }
+
+  //   Contact.find().merge(request).countDocuments(),
+
+  //   request
+  //     .skip(skip)
+  //     .limit(perPage)
+  //     .sort({ [sortBy]: sortOrder })
+  //     .exec(),
+  // ]);
+
+  // const paginationContacts = calcPagination(totalItems, page, perPage);
   const contacts = await request
     .skip(skip)
-    .limit(perPage)
+    .limit(limit)
     .sort({ [sortBy]: sortOrder })
     .exec();
-  // const totalItems = await Contact.find().merge(request).countDocuments();
-  const totalItems = await countRequest.countDocuments();
+
   const { totalPages, hasNextPage, hasPreviousPage } = calcPagination({
     total: totalItems,
-    page,
     perPage,
+    page,
   });
+
   return {
     contacts,
+    totalItems,
     page,
     perPage,
-    totalItems,
     totalPages,
     hasPreviousPage,
     hasNextPage,
