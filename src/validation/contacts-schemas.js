@@ -7,14 +7,31 @@ import {
 
 export const contactAddSchema = Joi.object({
   name: Joi.string().required().min(3).max(20),
-  phoneNumber: Joi.string().required().pattern(phoneRegExp).min(3).max(20),
-  email: Joi.string().pattern(mailRegExp),
+  phoneNumber: Joi.string()
+    .required()
+    .pattern(phoneRegExp)
+    .min(3)
+    .max(20)
+    .messages({
+      'string.empty': 'Phone number is required.',
+      'string.pattern.base': 'Phone number must be a 10-digit number.',
+      'string.min': 'Phone number should have a minimum length of {#limit}.',
+      'string.max': 'Phone number should have a maximum length of {#limit}.',
+    }),
+  email: Joi.string().pattern(mailRegExp).messages({
+    'string.pattern.base': 'Email must be a valid email address.',
+  }),
   isFavourite: Joi.boolean().default(false),
   contactType: Joi.string()
     .min(3)
     .max(20)
     .valid(...typeList)
-    .default('personal'),
+    .default('personal')
+    .messages({
+      'string.min': 'Contact type should have a minimum length of {#limit}.',
+      'string.max': 'Contact type should have a maximum length of {#limit}.',
+      'any.only': 'Contact type must be one of {#valids}.',
+    }),
 });
 
 export const contactUpdateSchema = Joi.object({
