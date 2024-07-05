@@ -11,6 +11,7 @@ export const getContacts = async ({
   sortOrder = sortOrderList[0],
 }) => {
   const limit = perPage;
+  //added this to fix
   const skip = (page - 1) * perPage;
 
   const request = Contact.find();
