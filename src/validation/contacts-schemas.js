@@ -15,7 +15,7 @@ export const contactAddSchema = Joi.object({
     .messages({
       'string.empty': 'Phone number is required.',
       'string.pattern.base':
-        'Phone number must be in the format +380 followed by 9 digits. Example "+38050123456789',
+        'Phone number must be in the format +380 followed by 9 digits. Example "+380501234567',
       'string.min': 'Phone number should have a minimum length of {#limits}.',
       'string.max': 'Phone number should have a maximum length of {#limit}.',
     }),
