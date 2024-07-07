@@ -11,7 +11,7 @@ import { signupController } from '../controllers/auth.js';
 const authRouter = Router();
 
 authRouter.post(
-  'auth/register',
+  '/auth/register',
   validateBody(userSignupSchema),
   ctrlWrapper(signupController),
 );
