@@ -1,3 +1,4 @@
+import createHttpError from 'http-errors';
 import {
   getContacts,
   getContactById,
@@ -5,7 +6,6 @@ import {
   upsertContact,
   deleteContact,
 } from '../services/contacts.js';
-import createHttpError from 'http-errors';
 import parsePaginationParams from '../utils/parsePaginationParams.js';
 import parseSortParams from '../utils/parseSortParams.js';
 import parseContactFilterParams from '../utils/parseContactFilterParams.js';
