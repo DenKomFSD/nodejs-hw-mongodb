@@ -35,4 +35,15 @@ export const signinController = async (req, res) => {
   if (!passwordCompare) {
     throw createHttpError(401, 'Invalid password !');
   }
+
+  const accessToken = ;
+  const refreshToken = ;
+  res.json({
+    status: 200,
+    message: "Successfully logged in an user!",
+    data: {
+      accessToken,
+    },
+
+  })
 };
