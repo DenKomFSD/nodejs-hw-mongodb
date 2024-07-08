@@ -32,7 +32,7 @@ export const signinController = async (req, res) => {
   }
 
   const passwordCompare = await compareHash(password, user.password);
-  if (!compareHash) {
-    throw createHttpError(401, 'Invalid email or password !');
+  if (!passwordCompare) {
+    throw createHttpError(401, 'Invalid password !');
   }
 };
