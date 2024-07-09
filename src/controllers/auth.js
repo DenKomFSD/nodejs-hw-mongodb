@@ -1,5 +1,6 @@
 import createHttpError from 'http-errors';
 import { signup, findUser } from '../services/auth.js';
+import { createSession } from '../services/session.js';
 import { compareHash } from '../utils/hash.js';
 
 export const signupController = async (req, res) => {
@@ -36,14 +37,23 @@ export const signinController = async (req, res) => {
     throw createHttpError(401, 'Invalid password !');
   }
 
-  const accessToken = ;
-  const refreshToken = ;
+  const { accessToken, refreshToken, _id, refreshTokenValidUntil } =
+    await createSession(user._id);
+
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    expires: refreshTokenValidUntil,
+  });
+
+  res.cookie('sessionID', _id, {
+    httpOnly: true,
+    expires: refreshTokenValidUntil,
+  });
   res.json({
     status: 200,
-    message: "Successfully logged in an user!",
+    message: 'Successfully logged in an user!',
     data: {
-      accessToken,
+      accessToken: accessToken,
     },
-
-  })
+  });
 };
