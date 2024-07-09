@@ -17,6 +17,9 @@ export const getContacts = async ({
   const request = Contact.find();
   const totalItems = await Contact.find().merge(request).countDocuments();
 
+  if (filter.userId) {
+    request.where('userId').equals(filter.userId);
+  }
   if (filter.type) {
     request.where('type').equals(filter.type);
     // countRequest.where('type').equals(filter.type);

@@ -13,9 +13,10 @@ import { contactFieldList } from '../constants/contacts-constants.js';
 
 export const getAllContactsController = async (req, res, next) => {
   try {
+    const { _id: userId } = req.user;
     const { page, perPage } = parsePaginationParams(req.query);
     const { sortBy, sortOrder } = parseSortParams(req.query, contactFieldList);
-    const filter = parseContactFilterParams(req.query);
+    const filter = { ...parseContactFilterParams(req.query), userId };
     const data = await getContacts({
       page,
       perPage,
@@ -61,7 +62,8 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const addContactController = async (req, res) => {
-  const data = await addContact(req.body);
+  const { _id: userId } = req.user;
+  const data = await addContact(...req.body, userId);
 
   res.status(201).json({
     status: 201,
