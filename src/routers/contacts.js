@@ -9,12 +9,15 @@ import {
 
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import validateBody from '../utils/validateBody.js';
+import authenticate from '../middlewares/authenticate.js';
 import {
   contactAddSchema,
   contactUpdateSchema,
 } from '../validation/contacts-schemas.js';
 
 const router = Router();
+
+router.use(authenticate);
 
 //request
 

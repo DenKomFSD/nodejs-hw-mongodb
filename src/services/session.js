@@ -5,7 +5,11 @@ import {
   REFRESH_TOKEN_LIFETIME,
 } from '../constants/sorting.js';
 
-export const createSession = (userId) => {
+export const findSession = (filter) => Session.findOne(filter);
+
+export const createSession = async (userId) => {
+  //щоб створювалась сессія але попередня видалялась а не накопичувалось
+  await Session.deleteOne(userId);
   const accessToken = randomBytes(30).toString('base64');
   const refreshToken = randomBytes(30).toString('base64');
 
