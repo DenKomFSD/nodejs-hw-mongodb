@@ -1,7 +1,22 @@
 import createHttpError from 'http-errors';
 import { signup, findUser } from '../services/auth.js';
-import { createSession } from '../services/session.js';
+import { createSession, findSession } from '../services/session.js';
 import { compareHash } from '../utils/hash.js';
+
+const setupResponseSession = (
+  res,
+  { refreshToken, refreshTokenValidUntil, _id },
+) => {
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    expires: refreshTokenValidUntil,
+  });
+
+  res.cookie('sessionID', _id, {
+    httpOnly: true,
+    expires: refreshTokenValidUntil,
+  });
+};
 
 export const signupController = async (req, res) => {
   //беремо емейл
@@ -37,23 +52,43 @@ export const signinController = async (req, res) => {
     throw createHttpError(401, 'Invalid password !');
   }
 
-  const { accessToken, refreshToken, _id, refreshTokenValidUntil } =
-    await createSession(user._id);
+  const session = await createSession(user._id);
 
-  res.cookie('refreshToken', refreshToken, {
-    httpOnly: true,
-    expires: refreshTokenValidUntil,
-  });
-
-  res.cookie('sessionID', _id, {
-    httpOnly: true,
-    expires: refreshTokenValidUntil,
-  });
+  setupResponseSession(res, session);
   res.json({
     status: 200,
     message: 'Successfully logged in an user!',
     data: {
-      accessToken: accessToken,
+      accessToken: session.accessToken,
+    },
+  });
+};
+
+export const refreshController = async (req, res) => {
+  const { refreshToken, sessionId } = req.cookies;
+
+  //шукаємо сессію
+  const currentSession = await findSession({ sessionId, refreshToken });
+  if (!currentSession) {
+    throw createHttpError(401, 'Session not found');
+  }
+
+  const refreshTokenExpired =
+    new Date() > new Date(sessionId.refreshTokenValidUntil);
+
+  if (refreshTokenExpired) {
+    throw createHttpError(401, 'Session Expired');
+  }
+
+  const newSession = await createSession(currentSession.userId);
+
+  setupResponseSession(res, newSession);
+
+  res.json({
+    status: 200,
+    message: 'Successfully logged in an user!',
+    data: {
+      accessToken: newSession.accessToken,
     },
   });
 };
