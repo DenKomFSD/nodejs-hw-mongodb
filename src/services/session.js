@@ -9,7 +9,7 @@ export const findSession = (filter) => Session.findOne(filter);
 
 export const createSession = async (userId) => {
   //щоб створювалась сессія але попередня видалялась а не накопичувалось
-  await Session.deleteOne(userId);
+  await Session.deleteOne({ userId });
   const accessToken = randomBytes(30).toString('base64');
   const refreshToken = randomBytes(30).toString('base64');
 
@@ -24,3 +24,5 @@ export const createSession = async (userId) => {
     refreshTokenValidUntil,
   });
 };
+
+export const deleteSession = (filter) => Session.deleteOne(filter);
