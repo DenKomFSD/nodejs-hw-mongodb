@@ -70,6 +70,7 @@ export const signinController = async (req, res) => {
 
 export const refreshController = async (req, res) => {
   const { refreshToken, sessionId } = req.cookies;
+  console.log('Cookies:', req.cookies.sessionId);
   //шукаємо сессію
   const currentSession = await findSession({ _id: sessionId, refreshToken });
   if (!currentSession) {

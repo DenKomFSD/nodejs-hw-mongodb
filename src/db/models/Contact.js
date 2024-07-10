@@ -32,7 +32,7 @@ const contactSchema = new Schema(
       enum: typeList,
       default: 'personal',
     },
-    userID: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: 'user',
       required: true,
