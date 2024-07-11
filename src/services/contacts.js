@@ -10,12 +10,11 @@ export const getContacts = async ({
   sortBy = contactFieldList[0],
   sortOrder = sortOrderList[0],
 }) => {
-  const limit = perPage;
   //added this to fix and try redeploy
   const skip = (page - 1) * perPage;
+  const limit = perPage;
 
   const request = Contact.find();
-  const totalItems = await Contact.find().merge(request).countDocuments();
 
   if (filter.userId) {
     request.where('userId').equals(filter.userId);
@@ -44,7 +43,7 @@ export const getContacts = async ({
     .limit(limit)
     .sort({ [sortBy]: sortOrder })
     .exec();
-
+  const totalItems = await Contact.find().merge(request).countDocuments();
   const { totalPages, hasNextPage, hasPreviousPage } = calcPagination({
     total: totalItems,
     perPage,
