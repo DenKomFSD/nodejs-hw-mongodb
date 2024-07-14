@@ -5,3 +5,7 @@ export const SMTP = {
   SMTP_PASSWORD: 'SMTP_PASSWORD',
   SMTP_FROM: 'SMTP_FROM',
 };
+
+import path from 'node:path';
+
+export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
