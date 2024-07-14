@@ -36,13 +36,16 @@ authRouter.post('/auth/refresh', ctrlWrapper(refreshController));
 
 authRouter.post('/auth/logout', ctrlWrapper(logoutController));
 
-authRouter.post;
-'/auth/send-reset-email',
+authRouter.post(
+  '/auth/send-reset-email',
   validateBody(requestResetEmailSchema),
-  ctrlWrapper(requestResetEmailController);
+  ctrlWrapper(requestResetEmailController),
+);
 
-authRouter.post;
-'/auth/reset-password',
+authRouter.post(
+  '/auth/reset-password',
   validateBody(resetPasswordSchema),
-  ctrlWrapper(resetPasswordController);
+  ctrlWrapper(resetPasswordController),
+);
+
 export default authRouter;
