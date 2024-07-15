@@ -14,6 +14,7 @@ import {
   contactAddSchema,
   contactUpdateSchema,
 } from '../validation/contacts-schemas.js';
+import { upload } from '../middlewares/multer.js';
 
 const router = Router();
 
@@ -29,12 +30,14 @@ router.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
 //POST request
 router.post(
   '/contacts',
+  upload.single('photo'),
   validateBody(contactAddSchema),
   ctrlWrapper(addContactController),
 );
 
 router.patch(
   '/contacts/:contactId',
+  upload.single('photo'),
   validateBody(contactUpdateSchema),
   ctrlWrapper(patchContactController),
 );
