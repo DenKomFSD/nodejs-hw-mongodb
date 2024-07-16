@@ -6,6 +6,8 @@ import {
   deleteSession,
   findSession,
 } from '../services/session.js';
+// import { sendMail } from '../utils/sendMail.js';
+// import { env } from '../utils/env.js';
 import { compareHash } from '../utils/hash.js';
 import { resetPassword } from '../services/auth.js';
 
@@ -34,6 +36,14 @@ export const signupController = async (req, res) => {
     throw createHttpError(409, 'Email in use');
   }
   const newUser = await signup(req.body);
+  // const verifyEmail = {
+  //   subject: 'Verify email',
+  //   to: email,
+  //   html: `<a href="${env(
+  //     'APP_DOMAIN',
+  //   )}/auth/verify" target="_blank">Click to verify email</a>`,
+  // };
+
   //щоб в подальшому можна було все-ж таки найти пароль вертаємо розпилену дату але без паролю, тільки поля імені та пошти
   const data = {
     name: newUser.name,
@@ -52,6 +62,10 @@ export const signinController = async (req, res) => {
   if (!user) {
     throw createHttpError(401, 'Invalid email or password !');
   }
+
+  // if (!user.verify) {
+  //   throw createHttpError(401, 'Email not verified !');
+  // }
 
   const passwordCompare = await compareHash(password, user.password);
   if (!passwordCompare) {
