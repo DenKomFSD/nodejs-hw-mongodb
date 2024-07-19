@@ -13,6 +13,7 @@ import {
   logoutController,
   requestResetEmailController,
   resetPasswordController,
+  getGoogleOAuthUrlController,
 } from '../controllers/auth.js';
 import {
   requestResetEmailSchema,
@@ -47,5 +48,7 @@ authRouter.post(
   validateBody(resetPasswordSchema),
   ctrlWrapper(resetPasswordController),
 );
+
+authRouter.get('/auth/get-oauth-url', ctrlWrapper(getGoogleOAuthUrlController));
 
 export default authRouter;
