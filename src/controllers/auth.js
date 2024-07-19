@@ -10,7 +10,7 @@ import {
 // import { env } from '../utils/env.js';
 import { compareHash } from '../utils/hash.js';
 import { resetPassword } from '../services/auth.js';
-import { generateAuthUrl } from '../utils/googleOAuthClient.js';
+import { generateAuthUrl } from '../utils/googleOAuth2.js';
 
 const setupResponseSession = (
   res,
