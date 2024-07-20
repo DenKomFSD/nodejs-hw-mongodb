@@ -14,7 +14,7 @@ import {
 } from '../utils/googleOAuth2.js';
 import { randomBytes } from 'node:crypto';
 import { createSession } from './session.js';
-import Session from '../db/models/Session.js';
+// import Session from '../db/models/Session.js';
 
 export const findUser = (filter) => User.findOne(filter);
 
@@ -90,19 +90,16 @@ export const loginOrSignupWithGoogle = async (code) => {
 
   let user = await User.findOne({ email: payload.email });
   if (!user) {
-    const password = await hashValue(randomBytes(10), 10);
+    const password = await hashValue(randomBytes(10));
     user = await User.create({
       email: payload.email,
       name: getFullNameFromGoogleTokenPayload(payload),
       password,
-      role: 'user',
+      // role: 'user',
     });
   }
 
   const newSession = createSession();
 
-  return await Session.create({
-    userId: user._id,
-    ...newSession,
-  });
+  return await newSession;
 };
