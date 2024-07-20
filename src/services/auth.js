@@ -90,11 +90,12 @@ export const loginOrSignupWithGoogle = async (code) => {
 
   let user = await User.findOne({ email: payload.email });
   if (!user) {
-    const password = await hashValue(randomBytes(10));
-    user = await User.create({
+    // const password = await hashValue(randomBytes(10));
+    //було await User.create
+    user = await signup({
       email: payload.email,
       name: getFullNameFromGoogleTokenPayload(payload),
-      password,
+      password: randomBytes(10),
       // role: 'user',
     });
   }
