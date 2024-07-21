@@ -26,10 +26,10 @@ export const setupServer = () => {
   app.use(logger);
   app.use(cors());
   app.use(cookieParser());
-  app.use(authRouter);
-  app.use(contactsRouter);
   app.use('/uploads', express.static(UPLOAD_DIR));
   app.use('/api-docs', swaggerDocs());
+  app.use(authRouter);
+  app.use(contactsRouter);
 
   //middleware for request that is doesnt exist(adding in the end)
   app.use('*', notFoundHandler);
