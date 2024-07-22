@@ -15,12 +15,12 @@ requestBody:
         required:
           - name
           - phoneNumber
-          - userId
+          # - userId
         properties:
-          _id:
-            description: "Contact's id"
-            type: string
-            example: 65e4decdd286b30065d54af9
+          # _id:
+          #   description: "Contact's id"
+          #   type: string
+          #   example: 65e4decdd286b30065d54af9
           name:
             description: "Contact's name"
             type: string
@@ -40,10 +40,10 @@ requestBody:
             type: string
             enum: ['work', 'home', 'personal']
             default: 'personal'
-          userId:
-            description: "Contact's parent id"
-            type: string
-            example: 65e4decdd286b30065d54af9
+          # userId:
+          #   description: "Contact's parent id"
+          #   type: string
+          #   example: 65e4decdd286b30065d54af9
           photo:
             description: "Link to contacts's photo"
             type: string
